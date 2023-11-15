@@ -16,7 +16,7 @@ var StartCommand = discordgo.ApplicationCommand{
 var tournamentNumber = 0
 
 func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
+	_, err := s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
 		Content: "<@949044843949203576>",
 		Embeds: []*discordgo.MessageEmbed{
 			{
@@ -43,8 +43,12 @@ func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		File:            &discordgo.File{},
 		Embed:           &discordgo.MessageEmbed{},
 	})
+	if err != nil {
+		fmt.Println("Error sending message:", err)
+		return
+	}
 
-	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+	err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
 			TTS:             false,
@@ -59,4 +63,8 @@ func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			Title:           "",
 		},
 	})
+	if err != nil {
+		fmt.Println("Error sending message:", err)
+		return
+	}
 }
