@@ -48,4 +48,6 @@ func main() {
 	routers.HealthCheck()
 }
 
-func InteractionHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {}
+func InteractionHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	commands.StartTournament(s, i)
+}
