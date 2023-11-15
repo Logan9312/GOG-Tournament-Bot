@@ -12,7 +12,7 @@ var StartCommand = discordgo.ApplicationCommand{
 }
 
 // TODO Track tournament number
-var tournamentNumber = 0
+var tournamentNumber = 25
 
 func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	_, err := s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
