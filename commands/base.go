@@ -41,7 +41,6 @@ func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		StickerIDs:      []string{},
 		Flags:           0,
 		File:            &discordgo.File{},
-		Embed:           &discordgo.MessageEmbed{},
 	})
 	if err != nil {
 		fmt.Println("Error sending message:", err)
