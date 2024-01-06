@@ -16,10 +16,7 @@ var commandList = []*discordgo.ApplicationCommand{
 
 func main() {
 
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Println("Error loading .env file:", err)
-	}
+	godotenv.Load(".env")
 
 	token := os.Getenv("DISCORD_TOKEN")
 	s, err := discordgo.New("Bot " + token)
