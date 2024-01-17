@@ -26,7 +26,7 @@ var StartCommand = discordgo.ApplicationCommand{
 // And there can be a ranking of players based on wins'
 
 // TODO Track tournament number
-var tournamentNumber = 25
+var tournamentNumber = 27
 
 var (
 	tournamentRoleID = "1197231913560195082"
@@ -34,7 +34,14 @@ var (
 )
 
 func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	_, err := s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
+
+	tournament, err := requests.CreateTournament(fmt.Sprintf("Tournament %d", tournamentNumber))
+	if err != nil {
+		fmt.Println("Error creating tournament:", err)
+		return
+	}
+
+	_, err = s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
 		Content: fmt.Sprintf("<@&%s>", tournamentRoleID),
 		Embeds: []*discordgo.MessageEmbed{
 			{
@@ -43,26 +50,50 @@ func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 				Color:       deepSkyBlue,
 			},
 		},
-	})
-	if err != nil {
-		fmt.Println("Error sending message:", err)
-		return
-	}
-
-	err = requests.CreateTournament(fmt.Sprintf("Tournament %d", tournamentNumber))
-	if err != nil {
-		fmt.Println("Error creating tournament:", err)
-		return
-	}
-
-	err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{
-			Content: "Success",
+		Components: []discordgo.MessageComponent{
+			discordgo.ActionsRow{
+				Components: []discordgo.MessageComponent{
+					discordgo.Button{
+						Label:    "Join",
+						Style:    discordgo.SuccessButton,
+						CustomID: "join",
+					},
+				},
+			},
 		},
 	})
 	if err != nil {
 		fmt.Println("Error sending message:", err)
 		return
 	}
+
+	url := "https://challonge.com/" + tournament.URL
+
+	err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseChannelMessageWithSource,
+		Data: &discordgo.InteractionResponseData{
+			Embeds: []*discordgo.MessageEmbed{
+				{
+					Title:       fmt.Sprintf("Tournament %d!", tournamentNumber),
+					Description: "Tournament has been successfully created!",
+					Color:       deepSkyBlue,
+					Fields: []*discordgo.MessageEmbedField{
+						{
+							Name:   "URL",
+							Value:  url,
+							Inline: true,
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		fmt.Println("Error sending message:", err)
+		return
+	}
+}
+
+func JoinTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
+
 }

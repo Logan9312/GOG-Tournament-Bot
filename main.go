@@ -49,5 +49,17 @@ func main() {
 }
 
 func InteractionHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	commands.StartTournament(s, i)
+	switch i.Type {
+	case discordgo.InteractionApplicationCommand:
+		switch i.ApplicationCommandData().Name {
+		case "start":
+			commands.StartTournament(s, i)
+		}
+
+	case discordgo.InteractionMessageComponent:
+		switch i.MessageComponentData().CustomID {
+		case "join":
+			commands.JoinTournament(s, i)
+		}
+	}
 }

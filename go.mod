@@ -3,7 +3,7 @@ module github.com/Logan9312/GOG-Tournament-Bot
 go 1.21.3
 
 require (
-	github.com/bwmarrin/discordgo v0.27.2-0.20230922130345-1f0b57f11024
+	github.com/bwmarrin/discordgo v0.27.2-0.20240104191117-afc57886f91a
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.3
 )
