@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/Logan9312/GOG-Tournament-Bot/commands"
+	"github.com/Logan9312/GOG-Tournament-Bot/requests"
 	"github.com/Logan9312/GOG-Tournament-Bot/routers"
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
@@ -24,6 +25,8 @@ func main() {
 		fmt.Println("Error creating Discord session: ", err)
 		return
 	}
+
+	requests.API_KEY = os.Getenv("CHALLONGE_KEY")
 
 	s.AddHandler(InteractionHandler)
 

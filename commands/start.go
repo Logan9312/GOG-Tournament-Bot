@@ -3,13 +3,9 @@ package commands
 import (
 	"fmt"
 
+	"github.com/Logan9312/GOG-Tournament-Bot/requests"
 	"github.com/bwmarrin/discordgo"
-	"gorm.io/gorm"
 )
-
-type BotContext struct {
-	database *gorm.DB
-}
 
 var StartCommand = discordgo.ApplicationCommand{
 	Name:        "start",
@@ -18,14 +14,16 @@ var StartCommand = discordgo.ApplicationCommand{
 
 // Start off day with a reminder ping that Tournament is today. Charge headsets. Check Discord/Challonge names match. Remind them to switch back to Live if they were on Beta
 // Brackets are made based off previous wins. So best players ranked from 1 - ?
-// flurry of last minute adds/drops is always irritating - easy button for them to leave/join?
+// Flurry of last minute adds/drops is always irritating - easy button for them to leave/join?
 // Brackets locked
 // Threads created with Room number matching Match number, In Game Room number, and @ the players involved in match
 // Biggest issue with threads, Discord and Challonge dont match.
 // Before Tournament begins, tell them to quit out of game and relaunch so Comp button changes to Tournaments.
-// winners get reported, winner moves on and brackets are updated
-// Round X we begin streaming, post that we go Live on Twitch in General and Tournament General
+// Winners get reported, winner moves on and brackets are updated
+// Round 3 or 4 we begin streaming, post that we go Live on Twitch in General and Tournament General
 // Calculate top 8. post to Leaderboard
+// It doesn’t have to connect to challonge as long as brackets can get made
+// And there can be a ranking of players based on wins'
 
 // TODO Track tournament number
 var tournamentNumber = 25
@@ -48,6 +46,12 @@ func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	})
 	if err != nil {
 		fmt.Println("Error sending message:", err)
+		return
+	}
+
+	err = requests.CreateTournament(fmt.Sprintf("Tournament %d", tournamentNumber))
+	if err != nil {
+		fmt.Println("Error creating tournament:", err)
 		return
 	}
 
