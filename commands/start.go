@@ -35,7 +35,7 @@ var (
 	deepSkyBlue      = 0x00bfff
 )
 
-func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate, db *gorm.DB) {
+func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	_, err := s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
 		Content: fmt.Sprintf("<@&%s>", tournamentRoleID),
 		Embeds: []*discordgo.MessageEmbed{
