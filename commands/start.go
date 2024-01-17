@@ -4,7 +4,12 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+	"gorm.io/gorm"
 )
+
+type BotContext struct {
+	database *gorm.DB
+}
 
 var StartCommand = discordgo.ApplicationCommand{
 	Name:        "start",
@@ -25,14 +30,19 @@ var StartCommand = discordgo.ApplicationCommand{
 // TODO Track tournament number
 var tournamentNumber = 25
 
-func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
+var (
+	tournamentRoleID = "1197231913560195082"
+	deepSkyBlue      = 0x00bfff
+)
+
+func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate, db *gorm.DB) {
 	_, err := s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
-		Content: "<@949044843949203576>",
+		Content: fmt.Sprintf("<@&%s>", tournamentRoleID),
 		Embeds: []*discordgo.MessageEmbed{
 			{
 				Title:       fmt.Sprintf("Tournament %d!", tournamentNumber),
 				Description: "Tournament Information:",
-				Color:       0x00bfff,
+				Color:       deepSkyBlue,
 			},
 		},
 	})
@@ -44,7 +54,6 @@ func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
-			TTS:     false,
 			Content: "Success",
 		},
 	})

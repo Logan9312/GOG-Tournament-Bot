@@ -5,9 +5,11 @@ import (
 	"os"
 
 	"github.com/Logan9312/GOG-Tournament-Bot/commands"
+	bot "github.com/Logan9312/GOG-Tournament-Bot/database"
 	"github.com/Logan9312/GOG-Tournament-Bot/routers"
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 )
 
 var commandList = []*discordgo.ApplicationCommand{
@@ -25,7 +27,9 @@ func main() {
 		return
 	}
 
-	s.AddHandler(InteractionHandler)
+	db := bot.DatabaseConnect(os.Getenv("DATABASE_URL"))
+
+	s.AddHandler(InteractionHandler(db))
 
 	err = s.Open()
 	if err != nil {
@@ -45,6 +49,11 @@ func main() {
 	routers.HealthCheck()
 }
 
-func InteractionHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	commands.StartTournament(s, i)
+func InteractionHandler(db *gorm.DB) func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	return func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		switch i.ApplicationCommandData().Name {
+		case "start":
+			commands.StartTournament(s, i, db)
+		}
+	}
 }
