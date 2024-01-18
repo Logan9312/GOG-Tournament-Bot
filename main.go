@@ -28,6 +28,7 @@ func main() {
 	}
 
 	requests.API_KEY = os.Getenv("CHALLONGE_KEY")
+	requests.USER = os.Getenv("CHALLONGE_USER")
 
 	s.AddHandler(InteractionHandler)
 
