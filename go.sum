@@ -1,3 +1,5 @@
+github.com/FlowingSPDG/go-challonge v0.0.0-20230727202526-6a6d94cc37f9 h1:XXAvruFv6Rpq+GbUqyCVhqhSkExuCfZEdxF12IEVvEk=
+github.com/FlowingSPDG/go-challonge v0.0.0-20230727202526-6a6d94cc37f9/go.mod h1:8WzbitDa8NYa0o4+Fg9e1f7EH1qS1MFJW1LTOzYopsM=
 github.com/Logan9312/challonge-go v0.0.0-20200528100907-0ec0286ae369 h1:Vo+wpj3Vy7STEYkAOjNeJ33ho4gV1kjHQReIjxTXvDk=
 github.com/Logan9312/challonge-go v0.0.0-20200528100907-0ec0286ae369/go.mod h1:X1GsyiHGYNLwzejTt5OM4O18eAR5OWVnbOXIBQtnPOQ=
 github.com/bwmarrin/discordgo v0.27.2-0.20230922130345-1f0b57f11024 h1:fHuF+yROO5s6nrVaHu1HXjBmdqA1EtrrqrV/0PnfMr0=

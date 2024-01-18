@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/Logan9312/GOG-Tournament-Bot/requests"
 	"github.com/bwmarrin/discordgo"
@@ -56,7 +57,7 @@ func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 					discordgo.Button{
 						Label:    "Join",
 						Style:    discordgo.SuccessButton,
-						CustomID: "join",
+						CustomID: "join:" + tournament.URL,
 					},
 				},
 			},
@@ -95,5 +96,28 @@ func StartTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
 }
 
 func JoinTournament(s *discordgo.Session, i *discordgo.InteractionCreate) {
+
+	tournament, err := requests.GetTournament(strings.Split(i.MessageComponentData().CustomID, ":")[1])
+	if err != nil {
+		fmt.Println("Error getting tournament:", err)
+		return
+	}
+
+	participant, err := requests.AddParticipant(tournament, i.Member.User.Username, i.Member.User.ID)
+	if err != nil {
+		fmt.Println("Error adding participant:", err)
+		return
+	}
+
+	err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseUpdateMessage,
+		Data: &discordgo.InteractionResponseData{
+			Content: participant.Name + " You have successfully joined the tournament!",
+		},
+	})
+	if err != nil {
+		fmt.Println("Error sending message:", err)
+		return
+	}
 
 }

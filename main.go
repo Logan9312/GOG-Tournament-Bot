@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Logan9312/GOG-Tournament-Bot/commands"
 	"github.com/Logan9312/GOG-Tournament-Bot/requests"
@@ -57,7 +58,7 @@ func InteractionHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		}
 
 	case discordgo.InteractionMessageComponent:
-		switch i.MessageComponentData().CustomID {
+		switch strings.Split(i.MessageComponentData().CustomID, ":")[0] {
 		case "join":
 			commands.JoinTournament(s, i)
 		}
